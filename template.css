@@ -1,3 +1,4 @@
 .MMM-ODOT-TripCheck div {
-  color: purple;
+  max-width: 300px;
+  overflow-wrap: anywhere;
 }

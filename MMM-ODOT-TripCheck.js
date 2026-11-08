@@ -1,7 +1,11 @@
-Module.register("MMM-ODOT-TripCheck", {
+/* MagicMirror² Module: MMM-ODOT-TripCheck
+ *
+ * By Shaun Rasmusen https://github.com/ardentras
+ * MIT License.
+ */
 
+Module.register("MMM-ODOT-TripCheck", {
   defaults: {
-    exampleContent: ""
   },
 
   /**
@@ -15,10 +19,11 @@ Module.register("MMM-ODOT-TripCheck", {
    * Pseudo-constructor for our module. Initialize stuff here.
    */
   start() {
-    this.templateContent = this.config.exampleContent
+    this.templateContent = "Loading..."
 
-    // set timeout for next random text
-    setInterval(() => this.addRandomText(), 3000)
+    this.getIncidentInformation();
+
+    setInterval(() => this.getIncidentInformation(), 120000)
   },
 
   /**
@@ -29,8 +34,18 @@ Module.register("MMM-ODOT-TripCheck", {
    * @param {any} payload - The payload data`returned by the node helper.
    */
   socketNotificationReceived: function (notification, payload) {
-    if (notification === "EXAMPLE_NOTIFICATION") {
-      this.templateContent = `${this.config.exampleContent} ${payload.text}`
+    if (notification === "GET_INCIDENT_INFORMATION_COMPLETE") {
+      // {
+      //       location: response["LocationDescription"],
+      //       eventType: response["Type"],
+      //       impactType: response["Impact"],
+      //       headline: response["Headline"],
+      //       commentsHTML: response["Comments"],
+      //       eventStart: response["EventStart"],
+      //       eventEnd: response["EventEnd"],
+      //       lastUpdated: response["UpdateTime"]
+      // };
+      this.templateContent = `${JSON.stringify(payload)}`
       this.updateDom()
     }
   },
@@ -45,8 +60,8 @@ Module.register("MMM-ODOT-TripCheck", {
     return wrapper
   },
 
-  addRandomText() {
-    this.sendSocketNotification("GET_RANDOM_TEXT", { amountCharacters: 15 })
+  getIncidentInformation() {
+    this.sendSocketNotification("GET_INCIDENT_INFORMATION", this.config);
   },
 
   /**
@@ -55,10 +70,10 @@ Module.register("MMM-ODOT-TripCheck", {
    * @param {string} notification The notification ID, it is preferred that it prefixes your module name
    * @param {number} payload the payload type.
    */
-  notificationReceived(notification, payload) {
-    if (notification === "TEMPLATE_RANDOM_TEXT") {
-      this.templateContent = `${this.config.exampleContent} ${payload}`
-      this.updateDom()
-    }
-  }
+  // notificationReceived(notification, payload) {
+  //   if (notification === "TEMPLATE_RANDOM_TEXT") {
+  //     this.templateContent = `${this.config.exampleContent} ${payload}`
+  //     this.updateDom()
+  //   }
+  // }
 })

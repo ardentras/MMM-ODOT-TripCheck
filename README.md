@@ -1,6 +1,6 @@
 # MMM-ODOT-TripCheck
 
-*MMM-ODOT-TripCheck* is a module for [MagicMirror²](https://github.com/MagicMirrorOrg/MagicMirror) that displays ... [Module description]
+*MMM-ODOT-TripCheck* is a module for [MagicMirror²](https://github.com/MagicMirrorOrg/MagicMirror) that displays incident details for the state of Oregon.
 
 ## Screenshot
 
@@ -37,7 +37,10 @@ Minimal configuration to use the module:
 ```js
     {
         module: 'MMM-ODOT-TripCheck',
-        position: 'lower_third'
+        position: 'lower_third',
+        config: {
+            apiKey: tripcheckToken
+        }
     },
 ```
 
@@ -48,7 +51,13 @@ Configuration with all options:
         module: 'MMM-ODOT-TripCheck',
         position: 'lower_third',
         config: {
-            exampleContent: 'Welcome world'
+            apiKey: tripcheckToken,
+            incidents: {
+                bounds: "-121.30374,43.915940,-121.160000,43.986210",
+                eventTypes: ["Construction", "Detour", "Vehicle Restriction"],
+                impactTypes: ["High", "Closed"],
+                sourceAgency: "USDA, Forest Service - Deschutes NF"
+            }
         }
     },
 ```
@@ -57,13 +66,16 @@ Configuration with all options:
 
 Option|Possible values|Default|Description
 ------|------|------|-----------
-`exampleContent`|`string`|not available|The content to show on the page
+`apiKey`|`string`|None (required)|API key for access to the ODOT API
+`incidents.bounds`|`string`|None|Lon/Lat rectangle bounds to filter: minLon,minLat,maxLon,maxLat
+`incidents.sourceAgency`|`string`|None|The local agency responsible for the local incident
+`incidents.eventTypes`|`list(int)`|None|A list of event types to filter by as returned by `http://api.odot.state.or.us/tripcheck/Tle/TleWazeMetadata` under `TLE-incident-items.TLE-incd-type-list`
+`incidents.impactTypes`|`list(int)`|None|A list of impact types to filter by as returned by `http://api.odot.state.or.us/tripcheck/Tle/TleWazeMetadata` under `TLE-incident-items.TLE-travel-impact-list`
 
 ## Sending notifications to the module
 
 Notification|Description
 ------|-----------
-`TEMPLATE_RANDOM_TEXT`|Payload must contain the text that needs to be shown on this module
 
 ## Developer commands
 
