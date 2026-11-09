@@ -1,4 +1,47 @@
-.MMM-ODOT-TripCheck div {
+.MMM-ODOT-TripCheck {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.odot-incident-row {
   max-width: 300px;
   overflow-wrap: anywhere;
+  font-size: 16px;
+  line-height: 1.15;
+}
+
+.odot-incident-header {
+  display: flex;
+  font-size: 12px;
+  font-weight: 200;
+  border-bottom: #666 solid 1px;
+  justify-content: space-between
+}
+
+.odot-incident-closed {
+  color: #a33;
+  font-weight: 700;
+}
+
+.odot-incident-high {
+  color: #a63;
+  font-size: 20px;
+}
+
+.odot-incident-date {
+  text-align: left;
+}
+
+.odot-incident-body {
+  font-weight: 550;
+}
+
+.odot-incident-comments {
+  margin-top: -10px;
+  font-size: 14px;
+}
+
+.odot-incident-comments p {
+  margin-bottom: 25px;
 }

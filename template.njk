@@ -1,0 +1,47 @@
+<div class="MMM-ODOT-TripCheck">
+  {% if incidents.length == 0 %}
+  <span>{{ loadingContent }}</span>
+  {% else %}
+  {#
+    // {
+    //       location: response["LocationDescription"],
+    //       eventType: response["Type"],
+    //       impactType: response["Impact"],
+    //       headline: response["Headline"],
+    //       commentsHTML: response["Comments"],
+    //       eventStart: response["EventStart"],
+    //       eventEnd: response["EventEnd"],
+    //       lastUpdated: response["UpdateTime"]
+    // };
+  #}
+  {% for incident in incidents %}
+  <div class="odot-incident-row">
+    <div class="odot-incident-header">
+      <span class="odot-incident-event">{{ incident.eventType }} | Impact: <span class="
+      {% switch incident.impactType %}
+        {% case "High" %}
+      odot-incident-high
+        {% case "Closure" %}
+      odot-incident-closed
+        {% default %}
+      {% endswitch %}
+          ">{{incident.impactType}}</span>
+      </span>
+      <span class="odot-incident-date">
+      {% if incident.isLongterm %}
+      {{incident.eventStart}} - {{incident.eventEnd}}
+      {% else %}
+      {{incident.eventStart}}
+      {% endif %}
+      </span>
+    </div>
+    <div class="odot-incident-body">
+      <span>{{ incident.location }}</span>
+    </div>
+    <div class="odot-incident-comments">
+      {{ incident.commentsHTML | safe }}
+    </div>
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>

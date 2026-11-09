@@ -19,7 +19,11 @@ Module.register("MMM-ODOT-TripCheck", {
    * Pseudo-constructor for our module. Initialize stuff here.
    */
   start() {
-    this.templateContent = "Loading..."
+    this.templateData = {
+      headerPrefix: "TripCheck",
+      loadingContent: "Loading...",
+      incidents: []
+    }
 
     this.getIncidentInformation();
 
@@ -35,29 +39,26 @@ Module.register("MMM-ODOT-TripCheck", {
    */
   socketNotificationReceived: function (notification, payload) {
     if (notification === "GET_INCIDENT_INFORMATION_COMPLETE") {
-      // {
-      //       location: response["LocationDescription"],
-      //       eventType: response["Type"],
-      //       impactType: response["Impact"],
-      //       headline: response["Headline"],
-      //       commentsHTML: response["Comments"],
-      //       eventStart: response["EventStart"],
-      //       eventEnd: response["EventEnd"],
-      //       lastUpdated: response["UpdateTime"]
-      // };
-      this.templateContent = `${JSON.stringify(payload)}`
+      let isPlural = payload.length > 1 || payload.length == 0 ? 's' : '';
+      this.templateData.header = `${this.templateData.headerPrefix}: ${payload.length} incident${isPlural}`;
+      this.templateData.incidents = payload;
+
+      console.log(payload);
+
       this.updateDom()
     }
   },
 
-  /**
-   * Render the page we're on.
-   */
-  getDom() {
-    const wrapper = document.createElement("div")
-    wrapper.innerHTML = `<b>Title</b><br />${this.templateContent}`
+  getTemplateData() {
+    return this.templateData;
+  },
 
-    return wrapper
+  getTemplate() {
+    return "template.njk"
+  },
+
+  getHeader() {
+    return this.templateData.header;
   },
 
   getIncidentInformation() {

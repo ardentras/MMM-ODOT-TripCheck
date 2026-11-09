@@ -2,6 +2,7 @@ const NodeHelper = require("node_helper")
 const Log = require("logger");
 const url = require('node:url');
 const path = require('node:path');
+const moment = require('moment');
 
 const API_BASE = 'https://api.odot.state.or.us';
 function getApiHeaders(apiKey) {
@@ -91,6 +92,16 @@ module.exports = NodeHelper.create({
     );
   },
 
+  formatDate(eventDate) {
+    const currentYear = moment().year()
+    if (eventDate.year() != currentYear) {
+      formatString = "M/D/YYYY"
+    } else {
+      formatString = "M/D"
+    }
+    return eventDate.format(formatString)
+  },
+
   async socketNotificationReceived(notification, payload) {
     if (notification === "GET_INCIDENT_INFORMATION") {
       const apiKey = payload.apiKey
@@ -110,19 +121,29 @@ module.exports = NodeHelper.create({
         }
         let incidents = [];
         response["Incidents"].forEach((incident) => {
+          const locationDescription = incident["LocationDescription"].replace(/^(.{70}[^\s]*).*/, "$1")
+          const locationLeftovers = `<p>${incident["LocationDescription"].slice(locationDescription.length)}</p>`;
+          let commentsHTML = incident["Comments"];
+          if (locationDescription != incident["LocationDescription"]) {
+            commentsHTML = `${locationLeftovers}${incident["Comments"]}`;
+          }
+          const eventStart = moment(incident["EventStart"])
+          const eventEnd = moment(incident["EventEnd"])
+
           incidents.push({
-            location: incident["LocationDescription"],
+            location: locationDescription,
             eventType: incident["Type"],
             impactType: incident["Impact"],
             headline: incident["Headline"],
-            commentsHTML: incident["Comments"],
-            eventStart: incident["EventStart"],
-            eventEnd: incident["EventEnd"],
-            lastUpdated: incident["UpdateTime"]
+            commentsHTML: commentsHTML,
+            eventStart: this.formatDate(eventStart),
+            eventEnd: this.formatDate(eventEnd),
+            lastUpdated: incident["UpdateTime"],
+            isLongterm: !eventStart.isSame(eventEnd, 'day')
           })
         })
         this.sendSocketNotification("GET_INCIDENT_INFORMATION_COMPLETE", incidents);
-      } catch {
+      } catch (err) {
         console.error(err);
         this.sendSocketNotification("GET_INCIDENT_INFORMATION_COMPLETE", {
           errorMessage: 'Error fetching commute',
