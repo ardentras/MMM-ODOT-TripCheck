@@ -14,6 +14,7 @@
     //       lastUpdated: response["UpdateTime"]
     // };
   #}
+  {% if incidents.length > 0 %}
   {% for incident in incidents %}
   <div class="odot-incident-row">
     <div class="odot-incident-header">
@@ -28,11 +29,11 @@
           ">{{incident.impactType}}</span>
       </span>
       <span class="odot-incident-date">
-      {% if incident.isLongterm %}
-      {{incident.eventStart}} - {{incident.eventEnd}}
-      {% else %}
-      {{incident.eventStart}}
-      {% endif %}
+        {% if incident.isLongterm %}
+        {{incident.eventStart}} - {{incident.eventEnd}}
+        {% else %}
+        {{incident.eventStart}}
+        {% endif %}
       </span>
     </div>
     <div class="odot-incident-body">
@@ -43,5 +44,6 @@
     </div>
   </div>
   {% endfor %}
+  {% endif %}
   {% endif %}
 </div>
