@@ -54,9 +54,19 @@ Configuration with all options:
             apiKey: tripcheckToken,
             incidents: {
                 bounds: "-121.30374,43.915940,-121.160000,43.986210",
-                eventTypes: ["Construction", "Detour", "Vehicle Restriction"],
-                impactTypes: ["High", "Closed"],
-                sourceAgency: "USDA, Forest Service - Deschutes NF"
+                local: {
+                    display: true,
+                    eventTypes: ["Construction", "Detour", "Vehicle Restriction"],
+                    impactTypes: ["High", "Closed"],
+                    sourceAgency: "USDA, Forest Service - Deschutes NF"
+                },
+                state: {
+                    display: true,
+                    eventTypes: ["Road Work", "Vehicle Incident", "Obstruction"],
+                    impactTypes: [1,2,3,4,5,6,7,8,9,10],
+                    routeIds: ["US97"],
+                    activeEvents: true
+                }
             }
         }
     },
@@ -68,9 +78,15 @@ Option|Possible values|Default|Description
 ------|------|------|-----------
 `apiKey`|`string`|None (required)|API key for access to the ODOT API
 `incidents.bounds`|`string`|None|Lon/Lat rectangle bounds to filter: minLon,minLat,maxLon,maxLat
-`incidents.sourceAgency`|`string`|None|The local agency responsible for the local incident
-`incidents.eventTypes`|`list(int)`|None|A list of event types to filter by as returned by `http://api.odot.state.or.us/tripcheck/Tle/TleWazeMetadata` under `TLE-incident-items.TLE-incd-type-list`
-`incidents.impactTypes`|`list(int)`|None|A list of impact types to filter by as returned by `http://api.odot.state.or.us/tripcheck/Tle/TleWazeMetadata` under `TLE-incident-items.TLE-travel-impact-list`
+`incidents.local.display`|`bool`|true|Whether to show incidents from local agencies
+`incidents.local.eventTypes`|`list(string)`|None|A list of event types to filter by as returned by `http://api.odot.state.or.us/tripcheck/Tle/TleWazeMetadata` under `TLE-incident-items.TLE-incd-type-list`
+`incidents.local.impactTypes`|`list(string)`|None|A list of impact types to filter by as returned by `http://api.odot.state.or.us/tripcheck/Tle/TleWazeMetadata` under `TLE-incident-items.TLE-travel-impact-list`
+`incidents.local.sourceAgency`|`string`|None|The local agency responsible for the local incident
+`incidents.state.display`|`bool`|true|Whether to show incidents from ODOT
+`incidents.state.eventTypes`|`list(string)`|None|A list of event types to filter by as returned by `http://api.odot.state.or.us/tripcheck/Incidents/Metadata` under `incident-metadata-items.event-types`
+`incidents.state.impactTypes`|`list(int)`|None|A list of impact type IDs to filter by. For example, [1,2,5]
+`incidents.state.routeIds`|`list(string)`|None|A list of route names to filter by as returned by `http://api.odot.state.or.us/tripcheck/Routes` under `location-list`
+`incidents.state.activeEvents`|`bool`|true|Filters to only active events. Set to `false` to additionally list inactive events
 
 ## Sending notifications to the module
 

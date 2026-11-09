@@ -6,6 +6,15 @@
 
 Module.register("MMM-ODOT-TripCheck", {
   defaults: {
+    incidents: {
+      local: {
+        display: true
+      },
+      state: {
+        display: true,
+        activeEvents: true
+      }
+    }
   },
 
   /**
