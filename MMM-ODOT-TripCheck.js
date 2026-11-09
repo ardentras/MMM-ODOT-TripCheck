@@ -22,7 +22,7 @@ Module.register("MMM-ODOT-TripCheck", {
     this.templateData = {
       headerPrefix: "TripCheck",
       loadingContent: "Loading...",
-      incidents: []
+      incidents: null
     }
 
     this.getIncidentInformation();
