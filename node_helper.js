@@ -211,7 +211,7 @@ module.exports = NodeHelper.create({
         response.message || `API Error - ${resp.status} ${resp.statusText}`);
     }
     let incidents = [];
-    const filteredResponse = response["Incidents"].filter((i) => !payload.incidents.local.excludeEventIds.includes(i["Id"]));
+    const filteredResponse = response["Incidents"].filter((i) => !payload.incidents.local.excludeEventIds?.includes(i["Id"]) ?? true);
     filteredResponse.forEach((incident) => {
       const locationDescription = incident["LocationDescription"].replace(/^(.{70}[^\s]*).*/, "$1")
       const locationLeftovers = `<p>${incident["LocationDescription"].slice(locationDescription.length)}</p>`;
@@ -253,7 +253,7 @@ module.exports = NodeHelper.create({
         response.message || `API Error - ${resp.status} ${resp.statusText}`);
     }
     let incidents = [];
-    const filteredResponse = response.incidents.filter((i) => !payload.incidents.state.excludeEventIds.includes(i["event-id"]));
+    const filteredResponse = response.incidents.filter((i) => !payload.incidents.state.excludeEventIds?.includes(i["event-id"]) ?? true);
     filteredResponse.forEach((incident) => {
       const locationDescription = `${incident.location['location-name']} - ${incident.location['start-location']['location-desc']}`;
       let commentsHTML = `<p>${incident.headline}</p>`;
