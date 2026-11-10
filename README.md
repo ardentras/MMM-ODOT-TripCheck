@@ -58,14 +58,16 @@ Configuration with all options:
                     display: true,
                     eventTypes: ["Construction", "Detour", "Vehicle Restriction"],
                     impactTypes: ["High", "Closed"],
-                    sourceAgency: "USDA, Forest Service - Deschutes NF"
+                    sourceAgency: "USDA, Forest Service - Deschutes NF",
+                    excludeEventIds: [4846]
                 },
                 state: {
                     display: true,
                     eventTypes: ["Road Work", "Vehicle Incident", "Obstruction"],
-                    impactTypes: [1,2,3,4,5,6,7,8,9,10],
+                    impactTypes: [0,1,2,3,4,5],
                     routeIds: ["US97"],
-                    activeEvents: true
+                    activeEvents: true,
+                    excludeEventIds: ["26T03948"]
                 }
             }
         }
@@ -82,11 +84,13 @@ Option|Possible values|Default|Description
 `incidents.local.eventTypes`|`list(string)`|None|A list of event types to filter by as returned by `http://api.odot.state.or.us/tripcheck/Tle/TleWazeMetadata` under `TLE-incident-items.TLE-incd-type-list`
 `incidents.local.impactTypes`|`list(string)`|None|A list of impact types to filter by as returned by `http://api.odot.state.or.us/tripcheck/Tle/TleWazeMetadata` under `TLE-incident-items.TLE-travel-impact-list`
 `incidents.local.sourceAgency`|`string`|None|The local agency responsible for the local incident
+`incidents.local.excludeEventIds`|`list(int)`|None|A list of local event IDs to hide from display
 `incidents.state.display`|`bool`|true|Whether to show incidents from ODOT
 `incidents.state.eventTypes`|`list(string)`|None|A list of event types to filter by as returned by `http://api.odot.state.or.us/tripcheck/Incidents/Metadata` under `incident-metadata-items.event-types`
 `incidents.state.impactTypes`|`list(int)`|None|A list of impact type IDs to filter by. For example, [1,2,5]
 `incidents.state.routeIds`|`list(string)`|None|A list of route names to filter by as returned by `http://api.odot.state.or.us/tripcheck/Routes` under `location-list`
 `incidents.state.activeEvents`|`bool`|true|Filters to only active events. Set to `false` to additionally list inactive events
+`incidents.state.excludeEventIds`|`list(string)`|None|A list of state event IDs to hide from display
 
 ## Sending notifications to the module
 

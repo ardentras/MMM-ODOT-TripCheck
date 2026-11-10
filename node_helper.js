@@ -211,7 +211,8 @@ module.exports = NodeHelper.create({
         response.message || `API Error - ${resp.status} ${resp.statusText}`);
     }
     let incidents = [];
-    response["Incidents"].forEach((incident) => {
+    const filteredResponse = response["Incidents"].filter((i) => !payload.incidents.local.excludeEventIds.includes(i["Id"]));
+    filteredResponse.forEach((incident) => {
       const locationDescription = incident["LocationDescription"].replace(/^(.{70}[^\s]*).*/, "$1")
       const locationLeftovers = `<p>${incident["LocationDescription"].slice(locationDescription.length)}</p>`;
       let commentsHTML = incident["Comments"];
@@ -222,6 +223,7 @@ module.exports = NodeHelper.create({
       const eventEnd = moment(incident["EventEnd"])
 
       incidents.push({
+        eventId: incident["Id"],
         location: locationDescription,
         eventType: incident["Type"],
         impactType: incident["Impact"],
@@ -251,13 +253,16 @@ module.exports = NodeHelper.create({
         response.message || `API Error - ${resp.status} ${resp.statusText}`);
     }
     let incidents = [];
-    response.incidents.forEach((incident) => {
+    const filteredResponse = response.incidents.filter((i) => !payload.incidents.state.excludeEventIds.includes(i["event-id"]));
+    filteredResponse.forEach((incident) => {
       const locationDescription = `${incident.location['location-name']} - ${incident.location['start-location']['location-desc']}`;
       let commentsHTML = `<p>${incident.headline}</p>`;
       const eventStart = moment(incident.schedule['project-schedule']['start-date-time'])
       const eventEnd = moment(incident.schedule['project-schedule']['end-date-time'])
 
       incidents.push({
+        incidentId: incident['incident-id'],
+        eventId: incident['event-id'],
         location: locationDescription,
         eventType: this.resolveStateEventSubtypeName(incident['event-subtype-id']),
         impactType: incident['impact-id'],
