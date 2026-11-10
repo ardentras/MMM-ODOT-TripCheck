@@ -231,7 +231,7 @@ module.exports = NodeHelper.create({
         commentsHTML: commentsHTML,
         eventStart: this.formatDate(eventStart),
         eventEnd: this.formatDate(eventEnd),
-        lastUpdated: incident["UpdateTime"],
+        lastUpdated: moment(incident["UpdateTime"]),
         isLongterm: !eventStart.isSame(eventEnd, 'day')
       })
     })
@@ -270,7 +270,7 @@ module.exports = NodeHelper.create({
         commentsHTML: commentsHTML,
         eventStart: this.formatDate(eventStart),
         eventEnd: this.formatDate(eventEnd),
-        lastUpdated: incident["update-time"],
+        lastUpdated: moment(incident["update-time"]),
         isLongterm: !eventStart.isSame(eventEnd, 'day')
       })
     })
@@ -301,6 +301,9 @@ module.exports = NodeHelper.create({
           const stateIncidents = await this.getStateIncidents(payload, apiKey);
           incidents = incidents.concat(stateIncidents);
         }
+
+        incidents.sort((a, b) => b.lastUpdated.diff(a.lastUpdated));
+
         this.sendSocketNotification("GET_INCIDENT_INFORMATION_COMPLETE", incidents);
       } catch (err) {
         console.error(err);
