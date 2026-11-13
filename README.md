@@ -1,6 +1,6 @@
 # MMM-ODOT-TripCheck
 
-*MMM-ODOT-TripCheck* is a module for [MagicMirror²](https://github.com/MagicMirrorOrg/MagicMirror) that displays incident details for the state of Oregon.
+*MMM-ODOT-TripCheck* is a module for [MagicMirror²](https://github.com/MagicMirrorOrg/MagicMirror) that displays incident details for the state of Oregon. For TripCheck API details, see https://apiportal.odot.state.or.us .
 
 ## Screenshot
 
