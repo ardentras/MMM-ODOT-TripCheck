@@ -7,14 +7,14 @@
 .odot-incident-row {
   max-width: 400px;
   overflow-wrap: anywhere;
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1.15;
 }
 
 .odot-incident-header {
   display: flex;
-  font-size: 14px;
-  font-weight: 200;
+  font-size: 16px;
+  font-weight: 500;
   border-bottom: #666 solid 1px;
   justify-content: space-between
 }
@@ -39,7 +39,7 @@
 
 .odot-incident-comments {
   margin-top: -10px;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .odot-incident-comments p {
