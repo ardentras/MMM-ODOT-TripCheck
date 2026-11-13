@@ -255,7 +255,6 @@ module.exports = NodeHelper.create({
     let incidents = [];
     const filteredResponse = response.incidents.filter((i) => !payload.incidents.state.excludeEventIds?.includes(i["event-id"]) ?? true);
     filteredResponse.forEach((incident) => {
-      const locationDescription = `${incident.location['location-name']} - ${incident.location['start-location']['location-desc']}`;
       let commentsHTML = `<p>${incident.headline}</p>`;
       const eventStart = moment(incident.schedule['project-schedule']['start-date-time'])
       const eventEnd = moment(incident.schedule['project-schedule']['end-date-time'])
@@ -263,7 +262,7 @@ module.exports = NodeHelper.create({
       incidents.push({
         incidentId: incident['incident-id'],
         eventId: incident['event-id'],
-        location: locationDescription,
+        location: incident.location['start-location']['location-desc'],
         eventType: this.resolveStateEventSubtypeName(incident['event-subtype-id']),
         impactType: incident['impact-id'],
         headline: incident["impact-desc"],
